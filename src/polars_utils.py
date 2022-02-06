@@ -7,9 +7,7 @@ class PolarsUtils:
     def load_data(self):
         self.pl_match = pl.read_csv(f"{DATA_DIR}/match.csv")
         self.pl_cluster_regions = pl.read_csv(f"{DATA_DIR}/cluster_regions.csv")
-        self.pl_purchase_log = pl.read_csv(f"{DATA_DIR}/purchase_log.csv").sample(
-            frac=0.2
-        )
+        self.pl_purchase_log = pl.read_csv(f"{DATA_DIR}/purchase_log.csv")
         self.pl_item_id_names = pl.read_csv(f"{DATA_DIR}/item_ids.csv")
         self.pl_players = pl.read_csv(f"{DATA_DIR}/players.csv")
 
@@ -23,23 +21,27 @@ class PolarsUtils:
             self.pl_item_id_names, how="left", on="item_id"
         ).drop("item_id")
 
-        data = (
-            data.groupby(["match_id", "player_slot", "item_name"])["time"]
-            .agg_list()
-            .with_column_renamed("time_agg_list", "time")
-        )
-
         print(
-            data.to_pandas()
+            data.groupby(["match_id", "player_slot", "item_name"])
+            .agg(pl.col("time").list().keep_name())
             .groupby(["match_id", "player_slot"])
-            .apply(lambda x: dict(zip(x["item_name"], x["time"])))
-            .reset_index(name="purchases")
+            .agg(
+                [
+                    pl.apply(
+                        [pl.col("item_name"), pl.col("time")],
+                        lambda s: dict(zip(s[0], s[1].to_list())),
+                    ).alias("purchases")
+                ]
+            )
         )
 
     def prepare_player_data(self):
-        data = self.pl_players.query("account_id != 0")
-        data = data.join(self.pl_purchase_log, on=["match_id", "player_slot"])
-
-        pl_final = data.join(self.pl_match, how="left", on="match_id")
-        pl_final[:, [s.null_count() < 0.2 * pl_final.height for s in pl_final]]
+        pl_final = (
+            self.pl_players.filter(pl.col("account_id") != 0)
+            .join(self.pl_purchase_log, on=["match_id", "player_slot"])
+            .join(self.pl_match, how="left", on="match_id")
+        )
+        pl_final[
+            :, [col.null_count() <= 0.2 * pl_final.height for col in pl_final]
+        ]  # drop cols with more than 20% NaN
         print(pl_final)

@@ -7,9 +7,9 @@ class PandasUtils:
     def load_data(self):
         self.pd_match = pd.read_csv(f"{DATA_DIR}/match.csv")
         self.pd_cluster_regions = pd.read_csv(f"{DATA_DIR}/cluster_regions.csv")
-        self.pd_purchase_log = pd.read_csv(f"{DATA_DIR}/purchase_log.csv").sample(
-            frac=0.01
-        )
+        self.pd_purchase_log: pd.DataFrame = pd.read_csv(
+            f"{DATA_DIR}/purchase_log.csv"
+        ).sample(frac=0.1)
         self.pd_item_id_names = pd.read_csv(f"{DATA_DIR}/item_ids.csv")
         self.pd_players = pd.read_csv(f"{DATA_DIR}/players.csv")
 
@@ -42,4 +42,4 @@ class PandasUtils:
         pd_final = pd.merge(data, self.pd_match, how="left", on="match_id")
         pd_final = pd_final.dropna(
             axis=1, thresh=int(0.8 * len(pd_final))
-        )  # at least 80% non nan
+        )  # drop cols with more than 20% NaN
