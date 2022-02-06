@@ -6,7 +6,7 @@ authors = ["Andreas Kanz <andreas@akanz.de>"]
 
 [tool.poetry.dependencies]
 python = "~3.9"
-polars = "0.12.10"
+polars = "^0.12.10"
 ipykernel = "^6.6.0"
 black = "^21.12b0"
 pyinstrument = "^4.1.1"

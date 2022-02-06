@@ -21,7 +21,7 @@ class PolarsUtils:
             self.pl_item_id_names, how="left", on="item_id"
         ).drop("item_id")
 
-        print(
+        return (
             data.groupby(["match_id", "player_slot", "item_name"])
             .agg(pl.col("time").list().keep_name())
             .groupby(["match_id", "player_slot"])
@@ -35,13 +35,20 @@ class PolarsUtils:
             )
         )
 
-    def prepare_player_data(self):
+    def prepare_player_data(self, matches, purchases):
         pl_final = (
             self.pl_players.filter(pl.col("account_id") != 0)
-            .join(self.pl_purchase_log, on=["match_id", "player_slot"])
-            .join(self.pl_match, how="left", on="match_id")
+            .join(purchases, on=["match_id", "player_slot"])
+            .join(matches, how="left", on="match_id")
         )
-        pl_final[
-            :, [col.null_count() <= 0.2 * pl_final.height for col in pl_final]
+
+        pl_final = pl_final[
+            :,
+            [
+                pl_final[col].null_count() <= 0.2 * pl_final.height
+                for col in pl_final.columns
+                if col not in ["purchases"]
+            ]
+            + ["purchases"],
         ]  # drop cols with more than 20% NaN
-        print(pl_final)
+        return pl_final

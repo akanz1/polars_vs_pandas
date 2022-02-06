@@ -12,6 +12,8 @@
 - Proper NaN dtypes (unlike pandas where pd.NA is float)
 - ...
 
+**=> 5x-20x faster runtime than pandas at 50%-75% lower memory consumption**
+
 ## Daten
 
 Dota 2 [Datensatz](https://www.kaggle.com/devinanzelmo/dota-2-matches) von Kaggle im format `.csv`

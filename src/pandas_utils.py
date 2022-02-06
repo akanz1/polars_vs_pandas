@@ -35,11 +35,11 @@ class PandasUtils:
             .reset_index(name="purchases")
         )
 
-    def prepare_player_data(self):
+    def prepare_player_data(self, matches, purchases):
         data = self.pd_players.query("account_id != 0")
-        data = pd.merge(data, self.pd_purchase_log, on=["match_id", "player_slot"])
+        data = pd.merge(data, purchases, on=["match_id", "player_slot"])
 
-        pd_final = pd.merge(data, self.pd_match, how="left", on="match_id")
-        pd_final = pd_final.dropna(
+        pd_final = pd.merge(data, matches, how="left", on="match_id")
+        return pd_final.dropna(
             axis=1, thresh=int(0.8 * len(pd_final))
         )  # drop cols with more than 20% NaN
