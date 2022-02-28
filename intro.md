@@ -146,3 +146,149 @@ TODO: Explain polars API by copying snippets into markdown + comments
   <p>π -> projection pushdown (column selection on scan level)</p>
   <img src="./img/graph_optimized.svg">
 </div>
+
+## Lazy evaluation and fetch
+
+```python
+# fetch takes a number of rows from the initial files and run the code 
+
+# Example: 18Mio entries in the largest file 'purchase_log' 
+# -> 100 Mio limit fetches all data
+# -> 1 Mio limit fetches a fraction of the data
+
+pl_final_fetch = pl_final_lazy.fetch(n_rows=int(1_000_000))
+pl_final_fetch.shape
+>>> (15305, 86)
+```
+
+## More about polars
+
+```python
+df
+┌──────┬───────┬──────────┬──────────┬────────┐
+│ nrs  ┆ names ┆ random   ┆ random2  ┆ groups │
+│ ---  ┆ ---   ┆ ---      ┆ ---      ┆ ---    │
+│ i64  ┆ str   ┆ f64      ┆ f64      ┆ str    │
+╞══════╪═══════╪══════════╪══════════╪════════╡
+│ 1    ┆ foo   ┆ 0.154163 ┆ 0.900715 ┆ A      │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┤
+│ 2    ┆ ham   ┆ 0.74     ┆ 0.033421 ┆ A      │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┤
+│ 3    ┆ spam  ┆ 0.263315 ┆ 0.956949 ┆ B      │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┤
+│ null ┆ foo   ┆ 0.533739 ┆ 0.137209 ┆ C      │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┤
+│ 5    ┆ foo   ┆ 0.014575 ┆ 0.283828 ┆ A      │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┤
+│ 6    ┆ spam  ┆ 0.918747 ┆ 0.606083 ┆ A      │
+└──────┴───────┴──────────┴──────────┴────────┘
+```
+
+### Basic operations
+
+```python
+df[
+    [
+        pl.col("random").count().alias("count_method"),
+        pl.count("random").alias("count_function"),
+    ]
+]
+
+┌──────────────┬────────────────┐
+│ count_method ┆ count_function │
+│ ---          ┆ ---            │
+│ u32          ┆ u32            │
+╞══════════════╪════════════════╡
+│ 6            ┆ 6              │
+└──────────────┴────────────────┘
+```
+
+### Selecting columns
+
+Polars expressions such as sum() can be used in three different contexts.
+
+- selection: df.select([..])
+- groupby / aggregation: df.groupby(..).agg([..])
+- hstack / add columns: df.with_columns([..])
+
+```python
+# in any case there are multiple ways to select columns
+df[
+    [
+        pl.sum("random").alias("sum_function"),
+        pl.sum(pl.Float64),
+        # pl.sum("^random.*$")
+        # pl.all().exclude(["nrs", "names", "groups"]).sum()
+    ]
+]
+
+┌──────────────┬──────────┬──────────┐
+│ sum_function ┆ random   ┆ random2  │
+│ ---          ┆ ---      ┆ ---      │
+│ f64          ┆ f64      ┆ f64      │
+╞══════════════╪══════════╪══════════╡
+│ 2.624589     ┆ 2.624589 ┆ 2.918206 │
+└──────────────┴──────────┴──────────┘
+```
+
+### conditional operations
+
+```python
+df.select(
+    [
+        (
+            pl.when(pl.col("random") > 0.5)
+            .then(0)
+            .otherwise(pl.col("random")) * pl.sum("nrs")
+        ).alias("binary_function")
+    ]
+
+┌─────────────────┐
+│ binary_function │
+│ ---             │
+│ f64             │
+╞═════════════════╡
+│ 2.620768        │
+├╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 0.0             │
+├╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 4.476355        │
+├╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 0.0             │
+├╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 0.247774        │
+├╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 0.0             │
+└─────────────────┘
+```
+
+### Window functions
+
+```python
+df[
+    [
+        # pl.all().exclude("^random.*$"),
+        pl.col("*").exclude("^random.*$"),
+        pl.col("names").list().over("groups").alias("names/groups"),
+        pl.col("names").unique().over("groups").alias("unique_names/groups"),
+    ]
+]
+
+┌──────┬───────┬────────┬──────────────────────────────┬────────────────────────┐
+│ nrs  ┆ names ┆ groups ┆ names/groups                 ┆ unique_names/groups    │
+│ ---  ┆ ---   ┆ ---    ┆ ---                          ┆ ---                    │
+│ i64  ┆ str   ┆ str    ┆ list [str]                   ┆ list [str]             │
+╞══════╪═══════╪════════╪══════════════════════════════╪════════════════════════╡
+│ 1    ┆ foo   ┆ A      ┆ ["foo", "ham", "foo" "spam"] ┆ ["ham", "spam", "foo"] │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 2    ┆ ham   ┆ A      ┆ ["foo", "ham", "foo" "spam"] ┆ ["ham", "spam", "foo"] │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 3    ┆ spam  ┆ B      ┆ ["spam"]                     ┆ ["spam"]               │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ null ┆ foo   ┆ C      ┆ ["foo"]                      ┆ ["foo"]                │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 5    ┆ foo   ┆ A      ┆ ["foo", "ham", "foo" "spam"] ┆ ["ham", "spam", "foo"] │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 6    ┆ spam  ┆ A      ┆ ["foo", "ham", "foo" "spam"] ┆ ["ham", "spam", "foo"] │
+└──────┴───────┴────────┴──────────────────────────────┴────────────────────────┘
+```
