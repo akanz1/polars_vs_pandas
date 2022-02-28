@@ -28,8 +28,8 @@ def polars_code():
 
 
 def main():
-    # pandas_code()
-    polars_code()
+    pandas_code()
+    # polars_code()
 
 
 if __name__ == "__main__":

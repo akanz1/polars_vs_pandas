@@ -1,0 +1,326 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1350pt" height="695pt" viewBox="0.00 0.00 1349.50 695.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 691)">
+<title>polars_query</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-691 1345.5,-691 1345.5,4 -4,4"/>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;match_id&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;match_id&quot;)] [0] -->
+<g id="node1" class="node">
+<title>JOIN
+                    left [col(&quot;match_id&quot;)];
+                    right: [col(&quot;match_id&quot;)] [0]</title>
+<polygon fill="none" stroke="black" points="813,-687 519,-687 519,-634 813,-634 813,-687"/>
+<text text-anchor="middle" x="666" y="-671.8" font-family="Times,serif" font-size="14.00">JOIN</text>
+<text text-anchor="middle" x="666" y="-656.8" font-family="Times,serif" font-size="14.00">                    left [col(&quot;match_id&quot;)];</text>
+<text text-anchor="middle" x="666" y="-641.8" font-family="Times,serif" font-size="14.00">                    right: [col(&quot;match_id&quot;)] [0]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1] -->
+<g id="node2" class="node">
+<title>JOIN
+                    left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+                    right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1]</title>
+<polygon fill="none" stroke="black" points="709.5,-598 284.5,-598 284.5,-545 709.5,-545 709.5,-598"/>
+<text text-anchor="middle" x="497" y="-582.8" font-family="Times,serif" font-size="14.00">JOIN</text>
+<text text-anchor="middle" x="497" y="-567.8" font-family="Times,serif" font-size="14.00">                    left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];</text>
+<text text-anchor="middle" x="497" y="-552.8" font-family="Times,serif" font-size="14.00">                    right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;match_id&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;match_id&quot;)] [0]&#45;&#45;JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1] -->
+<g id="edge1" class="edge">
+<title>JOIN
+                    left [col(&quot;match_id&quot;)];
+                    right: [col(&quot;match_id&quot;)] [0]--JOIN
+                    left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+                    right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1]</title>
+<path fill="none" stroke="black" d="M616.21,-633.87C594.3,-622.59 568.63,-609.37 546.73,-598.1"/>
+</g>
+<!-- FAST PROJECTION [(20, 1)] -->
+<g id="node11" class="node">
+<title>FAST PROJECTION [(20, 1)]</title>
+<polygon fill="none" stroke="black" points="958.5,-589.5 743.5,-589.5 743.5,-553.5 958.5,-553.5 958.5,-589.5"/>
+<text text-anchor="middle" x="851" y="-567.8" font-family="Times,serif" font-size="14.00">FAST PROJECTION [(20, 1)]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;match_id&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;match_id&quot;)] [0]&#45;&#45;FAST PROJECTION [(20, 1)] -->
+<g id="edge10" class="edge">
+<title>JOIN
+                    left [col(&quot;match_id&quot;)];
+                    right: [col(&quot;match_id&quot;)] [0]--FAST PROJECTION [(20, 1)]</title>
+<path fill="none" stroke="black" d="M720.51,-633.87C750.88,-619.58 787.87,-602.19 814.71,-589.57"/>
+</g>
+<!-- CSV SCAN ../data/dota/players.csv;
+π */73;
+σ (col(&quot;account_id&quot;)) != (0...
+[(20, 2)] -->
+<g id="node3" class="node">
+<title>CSV SCAN ../data/dota/players.csv;
+π */73;
+σ (col(&quot;account_id&quot;)) != (0...
+[(20, 2)]</title>
+<polygon fill="none" stroke="black" points="268,-509 0,-509 0,-441 268,-441 268,-509"/>
+<text text-anchor="middle" x="134" y="-493.8" font-family="Times,serif" font-size="14.00">CSV SCAN ../data/dota/players.csv;</text>
+<text text-anchor="middle" x="134" y="-478.8" font-family="Times,serif" font-size="14.00">π */73;</text>
+<text text-anchor="middle" x="134" y="-463.8" font-family="Times,serif" font-size="14.00">σ (col(&quot;account_id&quot;)) != (0...</text>
+<text text-anchor="middle" x="134" y="-448.8" font-family="Times,serif" font-size="14.00">[(20, 2)]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1]&#45;&#45;CSV SCAN ../data/dota/players.csv;
+π */73;
+σ (col(&quot;account_id&quot;)) != (0...
+[(20, 2)] -->
+<g id="edge2" class="edge">
+<title>JOIN
+                    left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+                    right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1]--CSV SCAN ../data/dota/players.csv;
+π */73;
+σ (col(&quot;account_id&quot;)) != (0...
+[(20, 2)]</title>
+<path fill="none" stroke="black" d="M398.77,-544.93C356.35,-533.89 306.19,-520.83 261,-509.06"/>
+</g>
+<!-- AGG [col(&quot;item_name&quot;).([col(&quot;time&quot;)]).alias(&quot;purchases&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;)] [(30, 2)] -->
+<g id="node4" class="node">
+<title>AGG [col(&quot;item_name&quot;).([col(&quot;time&quot;)]).alias(&quot;purchases&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;)] [(30, 2)]</title>
+<polygon fill="none" stroke="black" points="708,-501.5 286,-501.5 286,-448.5 708,-448.5 708,-501.5"/>
+<text text-anchor="middle" x="497" y="-486.3" font-family="Times,serif" font-size="14.00">AGG [col(&quot;item_name&quot;).([col(&quot;time&quot;)]).alias(&quot;purchases&quot;)]</text>
+<text text-anchor="middle" x="497" y="-471.3" font-family="Times,serif" font-size="14.00">BY</text>
+<text text-anchor="middle" x="497" y="-456.3" font-family="Times,serif" font-size="14.00">[col(&quot;match_id&quot;),col(&quot;player_slot&quot;)] [(30, 2)]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1]&#45;&#45;AGG [col(&quot;item_name&quot;).([col(&quot;time&quot;)]).alias(&quot;purchases&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;)] [(30, 2)] -->
+<g id="edge3" class="edge">
+<title>JOIN
+                    left [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)];
+                    right: [col(&quot;match_id&quot;), col(&quot;player_slot&quot;)] [1]--AGG [col(&quot;item_name&quot;).([col(&quot;time&quot;)]).alias(&quot;purchases&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;)] [(30, 2)]</title>
+<path fill="none" stroke="black" d="M497,-544.68C497,-531.34 497,-515.12 497,-501.79"/>
+</g>
+<!-- AGG [col(&quot;time&quot;).list().alias(&quot;time&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;),col(&quot;item_name&quot;)] [(30, 3)] -->
+<g id="node5" class="node">
+<title>AGG [col(&quot;time&quot;).list().alias(&quot;time&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;),col(&quot;item_name&quot;)] [(30, 3)]</title>
+<polygon fill="none" stroke="black" points="719.5,-397.5 268.5,-397.5 268.5,-344.5 719.5,-344.5 719.5,-397.5"/>
+<text text-anchor="middle" x="494" y="-382.3" font-family="Times,serif" font-size="14.00">AGG [col(&quot;time&quot;).list().alias(&quot;time&quot;)]</text>
+<text text-anchor="middle" x="494" y="-367.3" font-family="Times,serif" font-size="14.00">BY</text>
+<text text-anchor="middle" x="494" y="-352.3" font-family="Times,serif" font-size="14.00">[col(&quot;match_id&quot;),col(&quot;player_slot&quot;),col(&quot;item_name&quot;)] [(30, 3)]</text>
+</g>
+<!-- AGG [col(&quot;item_name&quot;).([col(&quot;time&quot;)]).alias(&quot;purchases&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;)] [(30, 2)]&#45;&#45;AGG [col(&quot;time&quot;).list().alias(&quot;time&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;),col(&quot;item_name&quot;)] [(30, 3)] -->
+<g id="edge4" class="edge">
+<title>AGG [col(&quot;item_name&quot;).([col(&quot;time&quot;)]).alias(&quot;purchases&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;)] [(30, 2)]--AGG [col(&quot;time&quot;).list().alias(&quot;time&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;),col(&quot;item_name&quot;)] [(30, 3)]</title>
+<path fill="none" stroke="black" d="M496.24,-448.26C495.79,-432.8 495.21,-413.19 494.76,-397.73"/>
+</g>
+<!-- FAST PROJECTION [(30, 4)] -->
+<g id="node6" class="node">
+<title>FAST PROJECTION [(30, 4)]</title>
+<polygon fill="none" stroke="black" points="601.5,-301 386.5,-301 386.5,-265 601.5,-265 601.5,-301"/>
+<text text-anchor="middle" x="494" y="-279.3" font-family="Times,serif" font-size="14.00">FAST PROJECTION [(30, 4)]</text>
+</g>
+<!-- AGG [col(&quot;time&quot;).list().alias(&quot;time&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;),col(&quot;item_name&quot;)] [(30, 3)]&#45;&#45;FAST PROJECTION [(30, 4)] -->
+<g id="edge5" class="edge">
+<title>AGG [col(&quot;time&quot;).list().alias(&quot;time&quot;)]
+BY
+[col(&quot;match_id&quot;),col(&quot;player_slot&quot;),col(&quot;item_name&quot;)] [(30, 3)]--FAST PROJECTION [(30, 4)]</title>
+<path fill="none" stroke="black" d="M494,-344.2C494,-330.24 494,-313.4 494,-301.08"/>
+</g>
+<!-- FAST PROJECTION [(30, 5)] -->
+<g id="node7" class="node">
+<title>FAST PROJECTION [(30, 5)]</title>
+<polygon fill="none" stroke="black" points="601.5,-229 386.5,-229 386.5,-193 601.5,-193 601.5,-229"/>
+<text text-anchor="middle" x="494" y="-207.3" font-family="Times,serif" font-size="14.00">FAST PROJECTION [(30, 5)]</text>
+</g>
+<!-- FAST PROJECTION [(30, 4)]&#45;&#45;FAST PROJECTION [(30, 5)] -->
+<g id="edge6" class="edge">
+<title>FAST PROJECTION [(30, 4)]--FAST PROJECTION [(30, 5)]</title>
+<path fill="none" stroke="black" d="M494,-264.7C494,-253.85 494,-239.92 494,-229.1"/>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;item_id&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;item_id&quot;)] [6] -->
+<g id="node8" class="node">
+<title>JOIN
+                    left [col(&quot;item_id&quot;)];
+                    right: [col(&quot;item_id&quot;)] [6]</title>
+<polygon fill="none" stroke="black" points="635,-157 353,-157 353,-104 635,-104 635,-157"/>
+<text text-anchor="middle" x="494" y="-141.8" font-family="Times,serif" font-size="14.00">JOIN</text>
+<text text-anchor="middle" x="494" y="-126.8" font-family="Times,serif" font-size="14.00">                    left [col(&quot;item_id&quot;)];</text>
+<text text-anchor="middle" x="494" y="-111.8" font-family="Times,serif" font-size="14.00">                    right: [col(&quot;item_id&quot;)] [6]</text>
+</g>
+<!-- FAST PROJECTION [(30, 5)]&#45;&#45;JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;item_id&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;item_id&quot;)] [6] -->
+<g id="edge7" class="edge">
+<title>FAST PROJECTION [(30, 5)]--JOIN
+                    left [col(&quot;item_id&quot;)];
+                    right: [col(&quot;item_id&quot;)] [6]</title>
+<path fill="none" stroke="black" d="M494,-192.97C494,-182.51 494,-168.9 494,-157.16"/>
+</g>
+<!-- CSV SCAN ../data/dota/purchase_log.csv;
+π 4/4;
+σ &#45;
+[(40, 7)] -->
+<g id="node9" class="node">
+<title>CSV SCAN ../data/dota/purchase_log.csv;
+π 4/4;
+σ -
+[(40, 7)]</title>
+<polygon fill="none" stroke="black" points="493.5,-68 184.5,-68 184.5,0 493.5,0 493.5,-68"/>
+<text text-anchor="middle" x="339" y="-52.8" font-family="Times,serif" font-size="14.00">CSV SCAN ../data/dota/purchase_log.csv;</text>
+<text text-anchor="middle" x="339" y="-37.8" font-family="Times,serif" font-size="14.00">π 4/4;</text>
+<text text-anchor="middle" x="339" y="-22.8" font-family="Times,serif" font-size="14.00">σ -</text>
+<text text-anchor="middle" x="339" y="-7.8" font-family="Times,serif" font-size="14.00">[(40, 7)]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;item_id&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;item_id&quot;)] [6]&#45;&#45;CSV SCAN ../data/dota/purchase_log.csv;
+π 4/4;
+σ &#45;
+[(40, 7)] -->
+<g id="edge8" class="edge">
+<title>JOIN
+                    left [col(&quot;item_id&quot;)];
+                    right: [col(&quot;item_id&quot;)] [6]--CSV SCAN ../data/dota/purchase_log.csv;
+π 4/4;
+σ -
+[(40, 7)]</title>
+<path fill="none" stroke="black" d="M452.05,-103.93C433.94,-92.89 412.53,-79.83 393.23,-68.06"/>
+</g>
+<!-- CSV SCAN ../data/dota/item_ids.csv;
+π 2/2;
+σ &#45;
+[(50, 7)] -->
+<g id="node10" class="node">
+<title>CSV SCAN ../data/dota/item_ids.csv;
+π 2/2;
+σ -
+[(50, 7)]</title>
+<polygon fill="none" stroke="black" points="786.5,-68 511.5,-68 511.5,0 786.5,0 786.5,-68"/>
+<text text-anchor="middle" x="649" y="-52.8" font-family="Times,serif" font-size="14.00">CSV SCAN ../data/dota/item_ids.csv;</text>
+<text text-anchor="middle" x="649" y="-37.8" font-family="Times,serif" font-size="14.00">π 2/2;</text>
+<text text-anchor="middle" x="649" y="-22.8" font-family="Times,serif" font-size="14.00">σ -</text>
+<text text-anchor="middle" x="649" y="-7.8" font-family="Times,serif" font-size="14.00">[(50, 7)]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;item_id&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;item_id&quot;)] [6]&#45;&#45;CSV SCAN ../data/dota/item_ids.csv;
+π 2/2;
+σ &#45;
+[(50, 7)] -->
+<g id="edge9" class="edge">
+<title>JOIN
+                    left [col(&quot;item_id&quot;)];
+                    right: [col(&quot;item_id&quot;)] [6]--CSV SCAN ../data/dota/item_ids.csv;
+π 2/2;
+σ -
+[(50, 7)]</title>
+<path fill="none" stroke="black" d="M535.95,-103.93C554.06,-92.89 575.47,-79.83 594.77,-68.06"/>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;cluster&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;cluster&quot;)] [2] -->
+<g id="node12" class="node">
+<title>JOIN
+                    left [col(&quot;cluster&quot;)];
+                    right: [col(&quot;cluster&quot;)] [2]</title>
+<polygon fill="none" stroke="black" points="1007.5,-501.5 728.5,-501.5 728.5,-448.5 1007.5,-448.5 1007.5,-501.5"/>
+<text text-anchor="middle" x="868" y="-486.3" font-family="Times,serif" font-size="14.00">JOIN</text>
+<text text-anchor="middle" x="868" y="-471.3" font-family="Times,serif" font-size="14.00">                    left [col(&quot;cluster&quot;)];</text>
+<text text-anchor="middle" x="868" y="-456.3" font-family="Times,serif" font-size="14.00">                    right: [col(&quot;cluster&quot;)] [2]</text>
+</g>
+<!-- FAST PROJECTION [(20, 1)]&#45;&#45;JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;cluster&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;cluster&quot;)] [2] -->
+<g id="edge11" class="edge">
+<title>FAST PROJECTION [(20, 1)]--JOIN
+                    left [col(&quot;cluster&quot;)];
+                    right: [col(&quot;cluster&quot;)] [2]</title>
+<path fill="none" stroke="black" d="M854.12,-553.17C856.71,-538.78 860.43,-518.11 863.36,-501.78"/>
+</g>
+<!-- CSV SCAN ../data/dota/match.csv;
+π */13;
+σ &#45;
+[(30, 3)] -->
+<g id="node13" class="node">
+<title>CSV SCAN ../data/dota/match.csv;
+π */13;
+σ -
+[(30, 3)]</title>
+<polygon fill="none" stroke="black" points="998,-405 738,-405 738,-337 998,-337 998,-405"/>
+<text text-anchor="middle" x="868" y="-389.8" font-family="Times,serif" font-size="14.00">CSV SCAN ../data/dota/match.csv;</text>
+<text text-anchor="middle" x="868" y="-374.8" font-family="Times,serif" font-size="14.00">π */13;</text>
+<text text-anchor="middle" x="868" y="-359.8" font-family="Times,serif" font-size="14.00">σ -</text>
+<text text-anchor="middle" x="868" y="-344.8" font-family="Times,serif" font-size="14.00">[(30, 3)]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;cluster&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;cluster&quot;)] [2]&#45;&#45;CSV SCAN ../data/dota/match.csv;
+π */13;
+σ &#45;
+[(30, 3)] -->
+<g id="edge12" class="edge">
+<title>JOIN
+                    left [col(&quot;cluster&quot;)];
+                    right: [col(&quot;cluster&quot;)] [2]--CSV SCAN ../data/dota/match.csv;
+π */13;
+σ -
+[(30, 3)]</title>
+<path fill="none" stroke="black" d="M868,-448.26C868,-435.16 868,-419.08 868,-405.07"/>
+</g>
+<!-- CSV SCAN ../data/dota/cluster_regions.csv;
+π */2;
+σ &#45;
+[(40, 3)] -->
+<g id="node14" class="node">
+<title>CSV SCAN ../data/dota/cluster_regions.csv;
+π */2;
+σ -
+[(40, 3)]</title>
+<polygon fill="none" stroke="black" points="1341.5,-405 1016.5,-405 1016.5,-337 1341.5,-337 1341.5,-405"/>
+<text text-anchor="middle" x="1179" y="-389.8" font-family="Times,serif" font-size="14.00">CSV SCAN ../data/dota/cluster_regions.csv;</text>
+<text text-anchor="middle" x="1179" y="-374.8" font-family="Times,serif" font-size="14.00">π */2;</text>
+<text text-anchor="middle" x="1179" y="-359.8" font-family="Times,serif" font-size="14.00">σ -</text>
+<text text-anchor="middle" x="1179" y="-344.8" font-family="Times,serif" font-size="14.00">[(40, 3)]</text>
+</g>
+<!-- JOIN
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left [col(&quot;cluster&quot;)];
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right: [col(&quot;cluster&quot;)] [2]&#45;&#45;CSV SCAN ../data/dota/cluster_regions.csv;
+π */2;
+σ &#45;
+[(40, 3)] -->
+<g id="edge13" class="edge">
+<title>JOIN
+                    left [col(&quot;cluster&quot;)];
+                    right: [col(&quot;cluster&quot;)] [2]--CSV SCAN ../data/dota/cluster_regions.csv;
+π */2;
+σ -
+[(40, 3)]</title>
+<path fill="none" stroke="black" d="M946.08,-448.39C986.11,-435.26 1035.34,-419.12 1078.21,-405.06"/>
+</g>
+</g>
+</svg>
