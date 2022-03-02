@@ -5,23 +5,32 @@
 - Written in Rust (-> Fast and memory efficient)
 - Relies on Arrow for Memory Mapping and column oriented data storage and access
 - Offers a Python wrapper (pip installable, everything can be done in python)
-- Multi-threaded compared to single-threaded numpy and pandas
+- Easy to get started and use (does not require additional components like PySpark or Dask do)
+- Multi-threaded compared to single-threaded numpy and pandas (Dask attempts to parallelize single threaded operations)
 - (Semi-) Lazy execution
 - Query optimizations (e.g. predicate pushdown, projection pushdown, …)
 - Operations run in parallelizable contexts -> each column operation runs in parallel
 - Proper NaN dtypes (unlike pandas where pd.NA is float)
-- Easy to get started and use (does not require additional components like PySpark or Dask do)
 - Distributes the work locally. For very big datasets this might be a limitation
 
-**=> Runs 5x-20x faster than pandas at 50%-75% lower memory consumption**
+=> Runs 5x-20x faster than pandas at 50%-75% lower memory consumption
 
+</br>
+</br>
+</br>
+
+---
+
+</br>
+</br>
+</br>
 
 ## Benchmark
 
 [H2O Database-like ops benchmark](https://h2oai.github.io/db-benchmark/)
 
-### Joins
-![Benchmark small join](./img/benchmark_small_join.png)
+### Join
+<!-- ![Benchmark small join](./img/benchmark_small_join.png) -->
 ![Benchmark medium join](./img/benchmark_join.png)
 
 ### Groupby
@@ -90,7 +99,7 @@ Dota 2 [Datensatz](https://www.kaggle.com/devinanzelmo/dota-2-matches) von Kaggl
 3              0           2       11            3  1179       22505   ...
 ```
 
-*Anonymous users have the value of 0 for account_id*
+*Note: Anonymous users have the value of 0 for account_id*
 
 ## Operations
 
@@ -103,19 +112,39 @@ pl_match = pl.read_csv(f"{DATA_DIR}/match.csv")
 match_with_region = pl_match.join(pl_cluster_regions, how="left", on="cluster").drop(
     "cluster"
 )
+```
 
+```python
+# Polars
 purchases_with_item_names = (
     pl_purchase_log.join(pl_item_id_names, how="left", on="item_id")
     .drop("item_id")
     .groupby(["match_id", "player_slot", "item_name"])
-    # In other cases close to pyspark
-    .agg(pl.col("time").list().keep_name())
+    .agg(pl.col("time").list().keep_name())  # In other cases close to pyspark
 )
-
-purchases_with_item_names.head()
 ```
 
-TODO: Explain polars API by copying snippets into markdown + comments
+```python
+# Pandas
+purchases_with_item_names = (
+    pd.merge(pd_purchase_log, pd_item_id_names, how="left", on="item_id")
+    .drop(columns="item_id")
+    .groupby(["match_id", "player_slot", "item_name"])["time"]
+    .apply(list)
+    .reset_index()
+)
+
+```
+
+</br>
+</br>
+</br>
+
+---
+
+</br>
+</br>
+</br>
 
 ## Results and performance
 
@@ -144,6 +173,7 @@ TODO: Explain polars API by copying snippets into markdown + comments
   </br>
   <p>σ -> predicate pushdown (filter etc. on scan level)</p>
   <p>π -> projection pushdown (column selection on scan level)</p>
+  <p>aggregate pushdown (aggregations on scan level)</p>
   <img src="./img/graph_optimized.svg">
 </div>
 
@@ -236,12 +266,12 @@ df[
 ```python
 df.select(
     [
-        (
-            pl.when(pl.col("random") > 0.5)
-            .then(0)
-            .otherwise(pl.col("random")) * pl.sum("nrs")
-        ).alias("binary_function")
+        pl.when(pl.col("random") > 0.5)
+        .then(0)
+        .otherwise(pl.col("random") * pl.sum("nrs"))
+        .alias("binary_function")
     ]
+)
 
 ┌─────────────────┐
 │ binary_function │
@@ -262,13 +292,44 @@ df.select(
 └─────────────────┘
 ```
 
+```python
+df.select(
+    [
+        pl.all(),
+        pl.when(pl.col("names") == "foo")
+        .then("cat_1")
+        .when(pl.col("names") == "spam")
+        .then("cat_2")
+        .otherwise("other")
+        .alias("name_category"),
+    ]
+)
+
+┌──────┬───────┬──────────┬──────────┬────────┬───────────────┐
+│ nrs  ┆ names ┆ random   ┆ random2  ┆ groups ┆ name_category │
+│ ---  ┆ ---   ┆ ---      ┆ ---      ┆ ---    ┆ ---           │
+│ i64  ┆ str   ┆ f64      ┆ f64      ┆ str    ┆ str           │
+╞══════╪═══════╪══════════╪══════════╪════════╪═══════════════╡
+│ 1    ┆ foo   ┆ 0.154163 ┆ 0.900715 ┆ A      ┆ cat_1         │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 2    ┆ ham   ┆ 0.74     ┆ 0.033421 ┆ A      ┆ other         │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 3    ┆ spam  ┆ 0.263315 ┆ 0.956949 ┆ B      ┆ cat_2         │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ null ┆ foo   ┆ 0.533739 ┆ 0.137209 ┆ C      ┆ cat_1         │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 5    ┆ foo   ┆ 0.014575 ┆ 0.283828 ┆ A      ┆ cat_1         │
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+│ 6    ┆ spam  ┆ 0.918747 ┆ 0.606083 ┆ A      ┆ cat_2         │
+└──────┴───────┴──────────┴──────────┴────────┴───────────────┘
+```
+
 ### Window functions
 
 ```python
 df[
     [
-        # pl.all().exclude("^random.*$"),
-        pl.col("*").exclude("^random.*$"),
+        pl.col("*").exclude("^random.*$"),  # alternatively: pl.all().exclude(...)
         pl.col("names").list().over("groups").alias("names/groups"),
         pl.col("names").unique().over("groups").alias("unique_names/groups"),
     ]
